@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import './Pages/Pages404.css';
 import Home from './Pages/Home'
 import {
   BrowserRouter,

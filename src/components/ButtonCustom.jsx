@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Button extends Component {
+class ButtonCustom extends Component {
     render() {
         return (
             <button className={this.props.jenisButton} onClick={this.props.func}>{this.props.children}</button>
@@ -8,4 +8,4 @@ class Button extends Component {
     }
 }
 
-export default Button
+export default ButtonCustom

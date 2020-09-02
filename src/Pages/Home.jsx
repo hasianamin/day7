@@ -1,5 +1,7 @@
 import React, { Component, createRef } from 'react';
-import Button from './../components/Button'
+import ButtonCustom from '../components/ButtonCustom'
+import {Spinner} from 'reactstrap'
+import Swal from 'sweetalert2'
 
 var data = [
   {nama: 'Budi', usia: 5, alamat: 'jl. sukahari'},
@@ -10,7 +12,6 @@ var data = [
 class Home extends Component {
   state = {
     indexEdit: -1,
-    indexDelete: -1,
     datamurid: []
   }
 
@@ -43,17 +44,36 @@ class Home extends Component {
     this.namaref.current.value = ''
     this.usiaref.current.value = ''
     this.alamatref.current.value = ''
+    Swal.fire(
+      'Added!',
+      'Data Murid successfully added.',
+      'success'
+    )
   }
 
   onDeleteCLick = (id) => {
     console.log(id)
     this.setState({indexDelete:id})
-  }
-  
-  confirmDelete = (id) => {
-    var datamurid = this.state.datamurid
-    this.state.datamurid.splice(id,1)
-    this.setState({datamurid, indexDelete: -1})
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        var datamurid = this.state.datamurid
+        this.state.datamurid.splice(id,1)
+        this.setState({datamurid, indexDelete: -1})
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+      }
+    })
   }
 
   onEditCLick = (id) => {
@@ -74,20 +94,7 @@ class Home extends Component {
 
   renderDataMurid = () => {
     var jsx = this.state.datamurid.map((value, index) => {
-      if(index === this.state.indexDelete){
-        return (
-          <tr key={index}>
-            <td>{index+1}</td>
-            <td>{value.nama.toUpperCase()}</td>
-            <td>{value.usia}</td>
-            <td>{value.alamat}</td>
-            <td>
-              <Button jenisButton='btn btn-success mr-2' func={() => this.confirmDelete(index)}>Confirm</Button>
-              <Button jenisButton='btn btn-secondary' func={() => this.setState({indexDelete: -1})}>Cancel</Button>
-            </td>
-          </tr>
-        )
-      } else if(index === this.state.indexEdit){
+      if(index === this.state.indexEdit){
         return (
           <tr key={index}>
             <td>{index+1}</td>
@@ -95,8 +102,8 @@ class Home extends Component {
             <td><input type='text' defaultValue={value.usia} ref={this.usiaref}/></td>
             <td><input type='text' defaultValue={value.alamat} ref={this.alamatref}/></td>
             <td>
-              <Button jenisButton='btn btn-success mr-2' func={() => this.confirmEdit(index)}>Confirm</Button>
-              <Button jenisButton='btn btn-secondary' func={() => this.setState({indexEdit: -1})}>Cancel</Button>
+              <ButtonCustom jenisButton='btn btn-success mr-2' func={() => this.confirmEdit(index)}>Confirm</ButtonCustom>
+              <ButtonCustom jenisButton='btn btn-secondary' func={() => this.setState({indexEdit: -1})}>Cancel</ButtonCustom>
             </td>
           </tr>
         )
@@ -108,8 +115,8 @@ class Home extends Component {
               <td>{value.usia}</td>
               <td>{value.alamat}</td>
               <td>
-                <Button jenisButton='btn btn-danger mr-2' func={() => this.onDeleteCLick(index)}>Delete</Button>
-                <Button jenisButton='btn btn-warning' func={() => this.onEditCLick(index)}>Edit</Button>
+                <ButtonCustom jenisButton='btn btn-danger mr-2' func={() => this.onDeleteCLick(index)}>Delete</ButtonCustom>
+                <ButtonCustom jenisButton='btn btn-warning' func={() => this.onEditCLick(index)}>Edit</ButtonCustom>
               </td>
             </tr>
           )
@@ -122,10 +129,10 @@ class Home extends Component {
     console.log('masuk render')
     if(this.state.datamurid.length !== 0){
       return (
-        <div className='row'>
+        <div className='row mt-5'>
           <div className="col-6 App mt-3 d-flex flex-column justify-content-center">
             <div className='col-11'>
-                <h1>Murid TK Sukamaju</h1>
+                <h1>Input Data Murid TK Sukamaju</h1>
                 <div className='form-group'>
                   <input class='form-control' type='text' placeholder='nama' ref={this.namaref}/>
                 </div>
@@ -139,6 +146,7 @@ class Home extends Component {
             </div>
           </div>
           <div className='col-6'>
+            <h1 className='text-center'>Data Murid TK Sukamaju</h1>
             <table className='col-11 table table-hover mt-3'>
               <thead className='thead-dark'>
                 <tr>
@@ -158,7 +166,10 @@ class Home extends Component {
       )
     } else {
       return (
-        <h1>Loading</h1>
+        <div style={{marginLeft:'50%', marginTop:'10%'}}>
+          <Spinner style={{width:'130px', height:'130px'}} color='info'/>
+          <h1>Loading</h1>
+        </div>
       )
     }
   }
