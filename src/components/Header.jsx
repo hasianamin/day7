@@ -6,36 +6,37 @@ import {
     NavbarToggler,
     NavbarBrand,
     Nav,
-    NavItem,
-    NavLink,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    NavbarText
+    NavItem
 } from 'reactstrap';
+import './Header.css'
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false)
     const toggle = () => setIsOpen(!isOpen)
     return (
         <div>
-            <Navbar color="light" light expand="md">
-                <NavbarBrand href="/">TK Sukamaju</NavbarBrand>
-                <NavbarToggler onClick={toggle} />
-                <Collapse isOpen={isOpen} navbar>
-                    <Nav className="mr-auto" navbar>
-                        <NavItem>
-                            <NavLink><Link to="/">Home</Link></NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink><Link to="/product">Product</Link></NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink><Link to="/topics">Topics</Link></NavLink>
-                        </NavItem>
-                    </Nav>
-                </Collapse>
+            <Navbar color="dark" light expand="md" className="d-flex flex-lg-row flex-column justify-content-between">
+                <div className="col-lg-6 col-12 d-flex justify-content-between">
+                    <NavbarBrand href="/" className="text-white">TK Sukamaju</NavbarBrand>
+                    <NavbarToggler onClick={toggle} />
+                </div>
+                <div className="col-lg-6 col-12 d-flex justify-content-lg-end justify-content-start">
+                    <div>
+                        <Collapse isOpen={isOpen} navbar>
+                            <Nav className="mr-auto" navbar>
+                                <NavItem>
+                                    <Link to="/" className="text-light custom p-3">Home</Link>
+                                </NavItem>
+                                <NavItem>
+                                    <Link to="/product" className="text-light custom p-3">Product</Link>
+                                </NavItem>
+                                <NavItem>
+                                    <Link to="/topics" className="text-light custom p-3">Topics</Link>
+                                </NavItem>
+                            </Nav>
+                        </Collapse>
+                    </div>
+                </div>
             </Navbar>
         </div>
     )
